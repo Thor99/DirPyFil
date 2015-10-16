@@ -3,7 +3,7 @@ import shutil
 
 def printDirAndFIles():
 
-    for root, dirs, files in os.walk('.'):
+    for root, dirs, files in os.walk('../../..'):
         for dirname in dirs:
             print(os.path.join(root, dirname))
 
@@ -13,7 +13,7 @@ def printDirAndFIles():
 def countDirsAndFIles():
     numberOfDirs = 0
     numberOfFIles = 0
-    for root, dirs, files in os.walk('.'):
+    for root, dirs, files in os.walk('../../..'):
         for dirname in dirs:
             numberOfDirs += 1
 
@@ -25,38 +25,51 @@ def countDirsAndFIles():
 
 
 
-def deleteFIle(file):
-    found = 0
-    for root, dirs, files in os.walk('.'):
+def deleteFile(fileNa):
+    for root, dirs, files in os.walk('../../..'):
         for name in files:
-            if(name == file):
-                found = 1
+            if(name == fileNa):
+                print "Deletando arquivo " + fileNa + "..."
+                os.remove(os.path.join(root, fileNa))
+                print("Arquivo removido.")
+                return
 
-    if(found == 1):
-        print("Deletando ", file, ".....")
-        os.remove(file)
-        print("Deletado")
-    else:
-        print("Nao achamos o arquivo requerido.")
+    print("Arquivo nao encontrado.")
 
-def deleteDir(dir):
-    found = 0
-    for root, dirs, files in os.walk('.'):
+def deleteDir(dirNa):
+    for root, dirs, files in os.walk('../../..'):
         for dirname in dirs:
-            if(dirname == dir):
-                found = 1
+            if(dirname == dirNa):
+                if os.listdir(os.path.join(root, dirNa)) == []:
+                    print("Deletando diretorio vazio " + dirNa + "...")
+                    os.rmdir(os.path.join(root, dirNa))
+                    print("diretorio vazio deletado.")
+                    return
+                else:
+                    print("Deletando diretorio " + dirNa + " e seu conteudo...")
+                    shutil.rmtree(os.path.join(root, dirNa))
+                    print("diretorio deletado.")
+                    return
 
-    if(found == 1):
-        if os.listdir(dir) == []:
-            print("Deletando diretorio vazio " + dir + "...")
-            os.rmdir(dir)
-            print("diretorio vazio deletado.")
-        else:
-            print("Deletando diretorio " + dir + " e seu conteudo...")
-            shutil.rmtree(dir)
-            print("diretorio deletado.")
+    print "Diretorio nao encontrado."
+
+def spaceOccupied():
+    size = 0
+    for root, dirs, files in os.walk('../../..'):
+        for fileName in files:
+            if os.path.join(root, fileName) == '../../../.config/google-chrome/SingletonCookie':
+                pass
+            else:
+                size += os.path.getsize(os.path.join(root, fileName))
+
+    if size >= 1073741824:
+        print size / 1073741824, "GB"
+    elif size >= 1048576:
+        print size / 1048576, "MB"
+    elif size >= 1024:
+        print size / 1024, "KB"
     else:
-        print("Nao achamos o diretorio requerido.")
+        print size, "Bytes"
 
 print "Welcome to PYing With Dir"
 print
@@ -68,6 +81,7 @@ print "Press 1 to list dirs and files\n"
 print "Press 2 to count dirs and files\n"
 print "Press 3 to delete some file\n"
 print "Press 4 to delete some dir\n"
+print "Press 5 to see how much memory is occupied in your compyter by files."
 print
 
 option = input("Choose an option: ")
@@ -85,10 +99,10 @@ elif option == 2:
 elif option == 3:
     print("Option chosen: Delete some file.")
     print
-    fileToDelete = raw_input("What's is our complete filename tha you want to delete: ")
+    fileToDelete = raw_input("What's is your complete filename tha you want to delete: ")
     print
     print
-    deleteFIle(fileToDelete)
+    deleteFile(fileToDelete)
 elif option == 4:
     print("Option chosen: Delete some directorie.")
     print
@@ -96,6 +110,11 @@ elif option == 4:
     print
     print
     deleteDir(dirname)
+elif option == 5:
+    print("Option chosen: See how much space is occupied.")
+    print
+    print
+    spaceOccupied()
 else:
     print("Wrong option.... Restart the script.")
 
