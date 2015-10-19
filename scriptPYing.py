@@ -29,38 +29,35 @@ def deleteFile(fileNa):
     for root, dirs, files in os.walk('../../..'):
         for name in files:
             if(name == fileNa):
-                print "Deletando arquivo " + fileNa + "..."
+                print "Deleting file " + fileNa + "..."
                 os.remove(os.path.join(root, fileNa))
-                print("Arquivo removido.")
+                print("File was removed.")
                 return
 
-    print("Arquivo nao encontrado.")
+    print("File not found.")
 
 def deleteDir(dirNa):
     for root, dirs, files in os.walk('../../..'):
         for dirname in dirs:
             if(dirname == dirNa):
                 if os.listdir(os.path.join(root, dirNa)) == []:
-                    print("Deletando diretorio vazio " + dirNa + "...")
+                    print("Deleting empty directory " + dirNa + "...")
                     os.rmdir(os.path.join(root, dirNa))
-                    print("diretorio vazio deletado.")
+                    print("Empty directory was deleted.")
                     return
                 else:
-                    print("Deletando diretorio " + dirNa + " e seu conteudo...")
+                    print("Deleting directory " + dirNa + " and your content...")
                     shutil.rmtree(os.path.join(root, dirNa))
-                    print("diretorio deletado.")
+                    print("Directory was deleted.")
                     return
 
-    print "Diretorio nao encontrado."
+    print "Directory not found."
 
 def spaceOccupied():
     size = 0
     for root, dirs, files in os.walk('../../..'):
         for fileName in files:
-            if os.path.join(root, fileName) == '../../../.config/google-chrome/SingletonCookie':
-                pass
-            else:
-                size += os.path.getsize(os.path.join(root, fileName))
+            size += os.path.getsize(os.path.join(root, fileName))
 
     if size >= 1073741824:
         print size / 1073741824, "GB"
@@ -73,7 +70,7 @@ def spaceOccupied():
 
 print "Welcome to PYing With Dir"
 print
-print "Remember that the script will work based on which directorie the script is!"
+print "Remember that the script will work based on which directory the script is!"
 print
 print "Choose some option to use the script:"
 print
@@ -104,9 +101,9 @@ elif option == 3:
     print
     deleteFile(fileToDelete)
 elif option == 4:
-    print("Option chosen: Delete some directorie.")
+    print("Option chosen: Delete some directory.")
     print
-    dirname = raw_input("What's is the directorie you want to delete: ")
+    dirname = raw_input("What's is the directory you want to delete: ")
     print
     print
     deleteDir(dirname)
